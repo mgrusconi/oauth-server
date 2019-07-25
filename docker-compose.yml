@@ -1,9 +1,16 @@
-version: "2"
+version: "3"
 
 services:
-  app:
+  oauth-server:
     build: ./
     ports:
       - "80:80"
     volumes:
       - .:/usr/src/app
+  
+  mongo:
+    image: mongo:3.6
+    ports: 
+      - "27017:27017"
+    volumes:
+      - ~/data:/data

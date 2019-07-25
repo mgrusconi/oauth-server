@@ -13,7 +13,7 @@ const packageJson = require('../../package.json');
 module.exports = {
   path: 'app',
   routes: 'modules/**/*-routing.js',
-  title: 'Node Archetipe',
+  title: 'Oauth Server',
   name: packageJson.name,
   version: packageJson.version,
   description: packageJson.description

@@ -13,51 +13,68 @@ const controller = require('./app-controller');
 const router = new Router();
 
 /**
- * @swagger
- * definitions:
- *   login:
- *     type: object
- *     required:
- *       - email
- *     properties:
- *       email:
- *         type: string
- *         default: "manningblankenship@quotezart.com"
- *         description: e-mail User
- */
+* @swagger
+* definitions:
+*   registry:
+*     type: object
+*     required:
+*       - email
+*       - password
+*       - roles
+*     properties:
+*       email:
+*         type: string
+*         default: "manningblankenship@quotezart.com"
+*         description: e-mail User
+*       password:
+*         type: string
+*         default: "manningblankenship"
+*         description: Password
+*       roles:
+*         type: array
+*         items: string
+*         description: Roles list
+*/
+
+/**
+* @swagger
+* definitions:
+*   login:
+*     type: object
+*     required:
+*       - email
+*       - password
+*     properties:
+*       email:
+*         type: string
+*         default: "manningblankenship@quotezart.com"
+*         description: e-mail User
+*       password:
+*         type: string
+*         default: "manningblankenship"
+*         description: Password
+*/
+
+/**
+* @swagger
+* definitions:
+*   response_registry:
+*     type: object
+*     properties:
+*       user_id:
+*         type: string
+*         default: "manningblankenship@quotezart.com"
+*         description: e-mail User
+*/
 
 /**
  * @swagger
- * definitions:
- *   generateToken:
- *     type: object
- *     required:
- *       - email
- *       - username
- *       - name
- *     properties:
- *       email:
- *         type: string
- *         default: "manningblankenship@quotezart.com"
- *         description: e-mail User
- *       username:
- *         type: string
- *         default: "manningblankenship"
- *         description: User Name
- *       name:
- *         type: string
- *         default: "Manning Blankenship"
- *         description: Fullname
- */
-
-/**
- * @swagger
- * /app/token:
+ * /app/registry:
  *   post:
  *     tags:
  *       - API v1
- *     summary: Login with User email.
- *     description: Method that allows the user to identify.
+ *     summary: Registry user.
+ *     description: Method that registry an user.
  *     consumes:
  *       - application/json
  *     produces:
@@ -68,7 +85,7 @@ const router = new Router();
  *         description: Profile
  *         required: true
  *         schema:
- *           $ref: '#/definitions/generateToken'
+ *           $ref: '#/definitions/registry'
  *       - name: x-key
  *         in: header
  *         description: API key
@@ -78,42 +95,10 @@ const router = new Router();
  *         default: 2fvTdG53VCp6z8ZbV66h
  *     responses:
  *       200:
- *         description: Profile created!
- */
-router.route('/token').post((...args) => controller.generateToken(...args));
-
-/**
- * @swagger
- * /app/token/validate:
- *   get:
- *     tags:
- *       - API v1
- *     summary: Get User by type (id or name)
- *     description: Method that allows to obtain a user according to his id or name.
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: x-key
- *         in: header
- *         description: API key
- *         required: true
- *         type: string
- *         format: string
- *         default: 2fvTdG53VCp6z8ZbV66h
- *       - name: access_token
- *         in: header
- *         description: User Token JWT
- *         type: string
- *         format: string
- *         default:
- *     responses:
- *       200:
- *         description: app!
  *         schema:
- *           $ref: ''
+ *           $ref: '#/definitions/response_registry'
  */
-
-router.route('/token/validate').get((...args) => controller.validateToken(...args));
+router.route('/registry').post((...args) => controller.registry(...args));
 
 /**
  * @swagger
@@ -121,7 +106,7 @@ router.route('/token/validate').get((...args) => controller.validateToken(...arg
  *   post:
  *     tags:
  *       - API v1
- *     summary: Login with User email.
+ *     summary: Login user.
  *     description: Method that allows the user to identify.
  *     consumes:
  *       - application/json
@@ -149,27 +134,15 @@ router.route('/login').post((...args) => controller.login(...args));
 
 /**
  * @swagger
- * /app/getuser/{type}/{value}:
+ * /app/token/validate:
  *   get:
  *     tags:
  *       - API v1
- *     summary: Get User by type (id or name)
- *     description: Method that allows to obtain a user according to his id or name.
+ *     summary: Validate Access Token
+ *     description: Method that validate an Access Token.
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: type
- *         in: path
- *         description: User ID
- *         required: true
- *         type: string
- *         default: id
- *       - name: value
- *         in: path
- *         description: User ID
- *         required: true
- *         type: string
- *         default: 031a0925-b531-4e5a-a5f4-059be5f5d9db
  *       - name: x-key
  *         in: header
  *         description: API key
@@ -177,7 +150,7 @@ router.route('/login').post((...args) => controller.login(...args));
  *         type: string
  *         format: string
  *         default: 2fvTdG53VCp6z8ZbV66h
- *       - name: user-token
+ *       - name: access_token
  *         in: header
  *         description: User Token JWT
  *         type: string
@@ -190,84 +163,6 @@ router.route('/login').post((...args) => controller.login(...args));
  *           $ref: ''
  */
 
-router.route('/getuser/:type/:value').get((...args) => controller.getUser(...args));
-
-/**
- * @swagger
- * /app/getpoliciesbyname/{name}:
- *   get:
- *     tags:
- *       - API v1
- *     summary: Get policies by Username
- *     description: Method that allows to obtain a list of policies according to the name of a user.
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: name
- *         in: path
- *         description: User ID
- *         required: true
- *         type: string
- *         default: Lamb
- *       - name: x-key
- *         in: header
- *         description: API key
- *         required: true
- *         type: string
- *         format: string
- *         default: 2fvTdG53VCp6z8ZbV66h
- *       - name: user-token
- *         in: header
- *         description: User Token JWT
- *         type: string
- *         format: string
- *         default:
- *     responses:
- *       200:
- *         description: app!
- *         schema:
- *           $ref: ''
- */
-
-router.route('/getpoliciesbyname/:name').get((...args) => controller.getPoliciesByUser(...args));
-
-/**
- * @swagger
- * /app/getuserbypolicy/{id}:
- *   get:
- *     tags:
- *       - API v1
- *     summary: Get User by policy id
- *     description: Method that allows to obtain a user a user according to the id of a policy.
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: id
- *         in: path
- *         description: Policy ID
- *         required: true
- *         type: string
- *         default: 64cceef9-3a01-49ae-a23b-3761b604800b
- *       - name: x-key
- *         in: header
- *         description: API key
- *         required: true
- *         type: string
- *         format: string
- *         default: 2fvTdG53VCp6z8ZbV66h
- *       - name: user-token
- *         in: header
- *         description: User Token JWT
- *         type: string
- *         format: string
- *         default:
- *     responses:
- *       200:
- *         description: app!
- *         schema:
- *           $ref: ''
- */
-
-router.route('/getuserbypolicy/:id').get((...args) => controller.getUserByPolicy(...args));
+router.route('/token/validate').get((...args) => controller.validateToken(...args));
 
 module.exports = router;

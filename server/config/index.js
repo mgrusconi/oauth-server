@@ -13,5 +13,5 @@ const _ = require('lodash');
 module.exports = _.extend(
   require('./common'),
   require('./security'),
-  require('./resources')
+  require('./database')
 );
