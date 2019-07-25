@@ -1,0 +1,31 @@
+{
+  "name": "node_archetipe",
+  "version": "0.0.0",
+  "description": "Node Archetipe",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -Rf built",
+    "test": "./node_modules/.bin/mocha --timeout 5000 test",
+    "test:watch": "./node_modules/.bin/mocha --timeout 5000 --watch",
+    "start_dev": "nodemon ./server/index.js",
+    "start_prod": "node ./server/index.js > ./logs/my_app_log.log 2> ./logs/my_app_err.log"
+  },
+  "author": "Marcelo Rusconi",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.3",
+    "dotenv": "^8.0.0",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.10",
+    "request": "^2.86.0",
+    "swagger-jsdoc": "^1.9.7",
+    "swagger-ui-express": "^2.0.15"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "supertest": "^3.4.2"
+  }
+}
